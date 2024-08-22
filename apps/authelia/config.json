@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "Authelia",
+  "port": 9091,
+  "available": true,
+  "exposable": true,
+  "id": "authelia",
+  "tipi_version": 20,
+  "version": "2024.6.3",
+  "https": true,
+  "categories": ["development"],
+  "description": "The authentication glue you need.",
+  "short_desc": "The authentication glue you need.",
+  "author": "Authelia",
+  "source": "https://github.com/authelia/authelia",
+  "supported_architectures": ["arm64", "amd64"],
+  "created_at": 1691943801422,
+  "updated_at": 1723566284000
+}
