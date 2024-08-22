@@ -3,33 +3,33 @@ services:
     image: authelia/authelia
     container_name: authelia
     volumes:
-      -  ${APP_DATA_DIR}/data/config:/config
+      - ${APP_DATA_DIR}/data/config:/config
     networks:
       - tipi_main_network
     labels:
-      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/authz/forward-auth
-      - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
-      - traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email  # yamllint disable-line rule:line-length
-      - # Main
+      -  # Main
       - traefik.enable: true
       - traefik.http.middlewares.authelia-web-redirect.redirectscheme.scheme: https
       - traefik.http.services.authelia.loadbalancer.server.port: 9091 # Should be the same as the app internal port so for this example 9443
-      - # Web
+      - traefik.http.middlewares.authelia.forwardauth.address: http://authelia:9091/api/authz/forward-auth
+      - traefik.http.middlewares.authelia.forwardauth.trustForwardHeade: true
+      - traefik.http.middlewares.authelia.forwardauth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Name,Remote-Email
+      -  # Web
       - traefik.http.routers.authelia-insecure.rule: Host(`${APP_DOMAIN}`)
       - traefik.http.routers.authelia-insecure.entrypoints: web
       - traefik.http.routers.authelia-insecure.service: authelia
       - traefik.http.routers.authelia-insecure.middlewares: authelia-web-redirect
-      - # Websecure
+      -  # Websecure
       - traefik.http.routers.authelia.rule: Host(`${APP_DOMAIN}`)
       - traefik.http.routers.authelia.entrypoints: websecure
       - traefik.http.routers.authelia.service: authelia
       - traefik.http.routers.authelia.tls.certresolver: myresolver
-      - # Local domain
+      -  # Local domain
       - traefik.http.routers.authelia-local-insecure.rule: Host(`authelia.${LOCAL_DOMAIN}`)
       - traefik.http.routers.authelia-local-insecure.entrypoints: web
       - traefik.http.routers.authelia-local-insecure.service: authelia
       - traefik.http.routers.authelia-local-insecure.middlewares: authelia-web-redirect
-      - # Local domain secure
+      -  # Local domain secure
       - traefik.http.routers.authelia-local.rule: Host(`authelia.${LOCAL_DOMAIN}`)
       - traefik.http.routers.authelia-local.entrypoints: websecure
       - traefik.http.routers.authelia-local.service: authelia
